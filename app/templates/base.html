@@ -1,0 +1,30 @@
+# templates/base.html
+{% set page_title = title or "Web ChatBot" %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>{{ page_title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/chat.css') }}" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <meta name="theme-color" content="#111827" />
+  </head>
+  <body>
+    {% block body %}{% endblock %}
+    <script>
+      // Expose a few template values to JS safely
+      window.__CHAT__ = {
+        sessionId: "{{ session_id }}",
+        wsPath: "{{ url_for('ws_chat') if false else '/app/ws' }}",
+      };
+    </script>
+    <script src="{{ url_for('static', path='/js/chat.js') }}"></script>
+  </body>
+</html>

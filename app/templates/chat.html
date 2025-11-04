@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block body %}
+<main class="chat-page">
+  <header class="chat-header">
+    <div class="title">
+      <span class="dot"></span>
+      <h1>{{ title }}</h1>
+    </div>
+    <div class="actions">
+      <button id="clear-history" title="Clear session">Clear</button>
+      <button id="export-history" title="Export JSON">Export</button>
+    </div>
+  </header>
+
+  <section id="messages" class="messages" aria-live="polite" aria-atomic="false" role="log"></section>
+
+  <footer class="composer">
+    <form id="composer-form" autocomplete="off">
+      <label class="file-pill" title="Attach file">
+        <input type="file" id="file-input" hidden />
+        <span>＋</span>
+      </label>
+      <input id="chat-input" type="text" placeholder="Type a message…" maxlength="4000" aria-label="Message" />
+      <button id="send-btn" type="submit" title="Send">Send</button>
+    </form>
+    <div class="hint">Type <code>/time</code> for a server time demo.</div>
+  </footer>
+</main>
+{% endblock %}
