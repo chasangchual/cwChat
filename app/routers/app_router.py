@@ -5,6 +5,8 @@ from typing import Optional
 import secrets
 from fastapi.responses import HTMLResponse, RedirectResponse
 from datetime import datetime, timezone
+
+from app.services.ollama_llm import OllamaLLMService
 from app.utils.session_utils import SESSION_COOKIE_NAME, SessionUtils
 from app.utils.date_utils import DateUtils
 from app.models.chat_message import ChatMessage, MemoryStore
@@ -13,6 +15,7 @@ chat_app_router = APIRouter(
 )
 
 templates = Jinja2Templates(directory="templates")
+service = OllamaLLMService()
 
 @chat_app_router.get("/", response_class=RedirectResponse)
 async def root():
@@ -40,7 +43,7 @@ async def ws_chat(websocket: WebSocket):
     try:
         # Expect a hello with session id
         hello = await websocket.receive_json()
-        if not isinstance(hello, dict) or hello.get("type") != "hello":
+        if not isinstance(hello, dict) or hello.get("type") != "cw_chat_hello":
             await websocket.close(code=1002)
             return
         session_id = hello.get("session_id") or SessionUtils.get_or_create_session_id(None)
@@ -119,9 +122,4 @@ async def demo_bot_reply(user_text: str) -> str:
     Replace with your LLM call. Kept simple for clarity.
     """
     # A tiny, deterministic toy response with "tools"
-    prefix = "You said:"
-    if user_text.strip().lower() in {"hi", "hello", "hey"}:
-        return "Hey! How can I help you today?"
-    if user_text.strip().lower().startswith("/time"):
-        return f"Current UTC time is {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')}."
-    return f"{prefix} “{user_text.strip()}”. Here’s a helpful response placeholder."
+    return service.invoke(user_text)
