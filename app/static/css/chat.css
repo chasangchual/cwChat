@@ -89,22 +89,33 @@ body{
   position:sticky; bottom:0; background: linear-gradient(0deg, var(--bg), transparent);
   padding: .75rem 1rem; border-top: 1px solid rgba(255,255,255,.06);
 }
+/* 3-column grid: ＋ | textarea | send */
 #composer-form{
-  display:flex; gap:.5rem; align-items:center; max-width:900px; margin:0 auto;
+  display:grid;
+  grid-template-columns: auto 1fr auto;
+  align-items:center;
+  gap:.5rem;
+  max-width:900px; margin:0 auto;
   background: var(--panel); padding:.5rem; border-radius:.8rem; border:1px solid rgba(255,255,255,.06)
 }
+
+/* middle column grows; avoid overflow in grid */
 #chat-input{
-  flex:1; background:transparent; border:none; color:var(--text); outline:none;
+  min-width:0;
+  width:100%;
+  background:transparent; border:none; color:var(--text); outline:none;
   padding:.6rem .5rem; font-size:1rem;
+  resize: vertical; /* why: allow taller messages */
 }
+
 #send-btn{
-  appearance:none; border:none; background:var(--accent); color:white; cursor:pointer;
+  align-self:end;           /* why: anchor to textarea bottom */
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-end;
+  appearance:none;
+  border:none; background:var(--accent); color:white; cursor:pointer;
   padding:.55rem .9rem; border-radius:.6rem; font-weight:600;
-}
-.file-pill{
-  display:inline-flex; align-items:center; justify-content:center;
-  width:36px; height:36px; border-radius:.6rem; background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.06); cursor:pointer; user-select:none;
 }
 
 .hint{max-width:900px; margin:.5rem auto 0; color:var(--muted); font-size:.85rem}

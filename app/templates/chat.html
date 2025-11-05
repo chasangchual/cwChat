@@ -20,10 +20,9 @@
         <input type="file" id="file-input" hidden />
         <span>＋</span>
       </label>
-      <input id="chat-input" type="text" placeholder="Type a message…" maxlength="4000" aria-label="Message" />
+      <textarea id="chat-input" rows="5" cols="40" aria-label="Message"></textarea>
       <button id="send-btn" type="submit" title="Send">Send</button>
     </form>
-    <div class="hint">Type <code>/time</code> for a server time demo.</div>
   </footer>
 </main>
 {% endblock %}

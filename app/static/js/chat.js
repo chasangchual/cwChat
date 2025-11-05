@@ -85,7 +85,7 @@
     state.ws.onopen = () => {
       state.connected = true;
       state.reconnectAttempts = 0;
-      state.ws.send(JSON.stringify({ type: "hello", session_id: state.sessionId }));
+      state.ws.send(JSON.stringify({ type: "cw_chat_hello", session_id: state.sessionId }));
     };
     state.ws.onclose = () => {
       state.connected = false;
