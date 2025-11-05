@@ -7,6 +7,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from datetime import datetime, timezone
 
 from app.services.ollama_llm import OllamaLLMService
+from app.services.ollama_llm_chat import OllamaLLMChatService
 from app.utils.session_utils import SESSION_COOKIE_NAME, SessionUtils
 from app.utils.date_utils import DateUtils
 from app.models.chat_message import ChatMessage, MemoryStore
@@ -15,7 +16,7 @@ chat_app_router = APIRouter(
 )
 
 templates = Jinja2Templates(directory="templates")
-service = OllamaLLMService()
+service = OllamaLLMChatService()
 
 @chat_app_router.get("/", response_class=RedirectResponse)
 async def root():
