@@ -16,7 +16,7 @@ chat_app_router = APIRouter(
 )
 
 templates = Jinja2Templates(directory="templates")
-service = OllamaLLMChatService()
+chat_service = OllamaLLMChatService()
 
 @chat_app_router.get("/", response_class=RedirectResponse)
 async def root():
@@ -87,7 +87,7 @@ async def ws_chat(websocket: WebSocket):
                     )
 
                 # Build assistant reply
-                reply = await demo_bot_reply(text)
+                reply = await chat_bot_reply(text)
 
                 # Stream assistant reply
                 await SessionUtils.stream_assistant(websocket, reply)
@@ -118,9 +118,5 @@ async def ws_chat(websocket: WebSocket):
         finally:
             await websocket.close(code=1011)
 
-async def demo_bot_reply(user_text: str) -> str:
-    """
-    Replace with your LLM call. Kept simple for clarity.
-    """
-    # A tiny, deterministic toy response with "tools"
-    return service.invoke(user_text)
+async def chat_bot_reply(user_text: str) -> str:
+    return chat_service.invoke(user_text)
