@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from app.services.ollama_llm import OllamaLLMService
 from app.services.ollama_llm_chat import OllamaLLMChatService
 from app.utils.session_utils import SESSION_COOKIE_NAME, SessionUtils
-from app.utils.date_utils import DateUtils
+from app.utils.date_utils import DateUtil
 from app.models.chat_message import ChatMessage, MemoryStore
 chat_app_router = APIRouter(
     prefix="/app"
@@ -61,7 +61,7 @@ async def ws_chat(websocket: WebSocket):
 
                 # Save user message
                 MemoryStore.setdefault(session_id, []).append(
-                    ChatMessage(role="user", content=text, at=DateUtils.now_iso())
+                    ChatMessage(role="user", content=text, at=DateUtil.now_datetime_iso())
                 )
                 await websocket.send_json({"type": "ack"})
 
@@ -78,7 +78,7 @@ async def ws_chat(websocket: WebSocket):
                         ChatMessage(
                             role="assistant",
                             content=f"(Received file: {name}, {size} bytes)",
-                            at=DateUtils.now_iso(),
+                            at=DateUtil.now_datetime_iso(),
                             meta={"kind": "file-receipt"},
                         )
                     )
@@ -94,7 +94,7 @@ async def ws_chat(websocket: WebSocket):
 
                 # Save assistant message
                 MemoryStore.setdefault(session_id, []).append(
-                    ChatMessage(role="assistant", content=reply, at=DateUtils.now_iso())
+                    ChatMessage(role="assistant", content=reply, at=DateUtil.now_datetime_iso())
                 )
 
                 # Typing end
